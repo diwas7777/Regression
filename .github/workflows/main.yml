@@ -1,0 +1,38 @@
+name: Scheduled Workflow
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Run every hour at the beginning of the hour
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: pytest
+    
+    - name: Run Custom Task
+      run: |
+        python hello.py
+        
+    - name: Commit and Push Changes
+      run: |
+        git config --local user.email "sthadiwash62@gmail.com"
+        git config --local user.name "Diwas"
+        git add .
+        git commit -m "Automated testing"
+        git push
